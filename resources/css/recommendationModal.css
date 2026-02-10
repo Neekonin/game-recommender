@@ -1,0 +1,103 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2,6,23,.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-container {
+  width: 92%;
+  max-width: 1200px;
+  max-height: 85vh;
+  background: linear-gradient(180deg, #020617, #020617ee);
+  border-radius: 22px;
+  padding: 24px 28px;
+  overflow-y: auto;
+  box-shadow: 0 40px 120px rgba(0,0,0,.8);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.modal-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #e5e7eb;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #f8fafc;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 22px;
+}
+
+/* 🎮 GAME CARD */
+.game-card {
+  background: #020617;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .25s ease, box-shadow .25s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,.5);
+}
+
+.game-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 25px 60px rgba(99,102,241,.35);
+}
+
+.cover {
+  height: 140px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(2,6,23,0) 0%,
+    rgba(2,6,23,.85) 100%
+  );
+}
+
+.game-info {
+  padding: 14px 16px;
+}
+
+.game-info h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 8px;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #a5b4fc;
+}
