@@ -1,7 +1,7 @@
 <template>
   <div class="login-page">
     <div class="login-card">
-      <h1 class="title">Game Recommender</h1>
+      <h1 class="title">Login</h1>
       <p class="subtitle">
         Descubra jogos incríveis feitos para você
       </p>

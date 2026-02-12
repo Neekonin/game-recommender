@@ -9,15 +9,8 @@ return new class extends Migration {
     {
         Schema::create('favorite_games', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnDelete();
-
-            $table->foreignId('game_id')
-                ->constrained()
-                ->cascadeOnDelete();
-
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('game_id')->constrained()->cascadeOnDelete();
             $table->unique(['user_id', 'game_id']);
         });
     }

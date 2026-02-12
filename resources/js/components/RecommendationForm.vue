@@ -1,18 +1,18 @@
 <template>
   <header class="app-header">
-      <button class="logout-btn" @click="logout">
-        ⬅ Sair
+      <button class="favorites-btn" @click="openFavorites">
+        ❤️ Favoritos
       </button>
 
-      <h1 class="app-title">
-        🎮 Recomendação de Jogos
-      </h1>
+      <button class="logout-btn" @click="logout">
+        Sair
+      </button>
   </header>
 
   <div class="filter-card">
     <header>
-      <h2>Descubra jogos para você</h2>
-      <p>Filtre por gêneros, estilos e plataformas</p>
+      <h2>Zerando a Dúvida</h2>
+      <p>Descubra jogos incríveis para você! Filtre por gêneros, estilos e plataformas</p>
     </header>
 
     <section class="filter-group">
@@ -80,6 +80,40 @@
       🔍 Buscar recomendações
     </button>
   </div>
+
+  <div v-if="showFavorites" class="favorites-overlay">
+    <div class="favorites-modal">
+
+      <div class="favorites-header">
+        <h2>❤️ Seus Favoritos</h2>
+        <button class="close-btn" @click="showFavorites = false">✕</button>
+      </div>
+
+      <div v-if="favoriteGames.length === 0" class="empty-state">
+        <p>Você ainda não favoritou nenhum jogo.</p>
+      </div>
+
+      <div v-else class="favorites-grid">
+        <div
+            v-for="game in favoriteGames"
+            :key="game.id"
+            class="favorite-card"
+            @click="openGameDetails(game)"
+          >
+
+          <img :src="game.cover_image" />
+
+          <div class="favorite-info">
+            <h3>{{ game.name }}</h3>
+            <span>⭐ {{ game.rating }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
 </template>
 
 
@@ -97,6 +131,8 @@ export default {
       styles: [],
       platforms: [],
       games: [],
+      favoriteGames: [],
+      showFavorites: false,
       showModal: false,
       filters: {
         genres: [],
@@ -138,6 +174,21 @@ export default {
         console.error(e);
         alert('Erro ao buscar recomendações');
       }
+    },
+
+    async openFavorites() {
+      try {
+        const res = await api.get('/user-favorite-games');
+        this.favoriteGames = res.data;
+        this.showFavorites = true;
+      } catch (e) {
+        console.error(e);
+        alert('Erro ao carregar favoritos');
+      }
+    },
+
+    openGameDetails(game) {
+      this.$emit('recommendationsShowed', [game], game.id);
     },
 
     async logout() {

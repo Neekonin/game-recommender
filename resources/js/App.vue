@@ -30,6 +30,7 @@
       <RecommendationsModal
         v-if="showModal"
         :games="games"
+        :openGameId="openGameId"
         @close="showModal = false"
       />
     </div>
@@ -56,6 +57,7 @@ export default {
       screen: 'login',
       showModal: false,
       games: [],
+      openGameId: null,
     };
   },
 
@@ -72,9 +74,10 @@ export default {
       this.screen = 'login';
     },
 
-    onRecommendationsShowed(games) {
+    onRecommendationsShowed(games, openGameId = null) {
       this.games = games;
       this.showModal = true;
+      this.openGameId = openGameId;
     },
   },
 

@@ -407,3 +407,26 @@
   border-radius: 4px;
   background: linear-gradient(90deg, #6c5ce7, #4834d4);
 }
+
+/* FAVORITOS */
+.favorite-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  transition: 0.3s ease;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.15);
+}
+
+.favorite-btn.active {
+  color: #e63946;
+}

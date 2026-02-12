@@ -55,8 +55,19 @@
           <img :src="selectedGame.cover_image" class="hero-bg" />
 
           <!-- Botão Voltar fixo no topo -->
-          <button class="back-btn" @click="selectedGame = null">
+          <button
+           v-if="showbackBtn"
+           class="back-btn" 
+           @click="selectedGame = null"
+          >
             Voltar
+          </button>
+          <button 
+              class="favorite-btn"
+              :class="{ active: isFavorited }"
+              @click="toggleFavorite"
+          >
+              ♥
           </button>
 
           <!-- Conteúdo central -->
@@ -163,7 +174,8 @@ import api from '../services/api';
 
 export default {
   props: {
-    games: Array
+    games: Array,
+    openGameId: Number
   },
 
   data() {
@@ -174,7 +186,16 @@ export default {
       openTrailer: false,
       lightboxOpen: false,
       currentImageIndex: 0,
+      isFavorited: false,
+      showbackBtn: true,
     };
+  },
+
+  mounted() {
+    if (this.openGameId) {
+      this.showbackBtn = false;
+      this.openGame(this.openGameId);
+    }
   },
 
   computed: {
@@ -194,6 +215,8 @@ export default {
       this.selectedGame = null;
       this.lightboxOpen = false;
       this.currentImageIndex = 0;
+      this.isFavorited = false;
+      this.showbackBtn = true;
       this.$emit('close');
     },
 
@@ -222,13 +245,36 @@ export default {
     async openGame(id) {
       this.lightboxOpen = false;
       this.currentImageIndex = 0;
+      this.isFavorited = false;
 
       try {
         const res = await api.get(`/game/${id}`);
         this.selectedGame = res.data;
+
+        this.checkIfFavorited();
       } catch (e) {
         console.error(e);
       }
+    },
+
+    async checkIfFavorited() {
+      try {
+        if (this.selectedGame.id) {
+          const res = await api.get(`/games/${this.selectedGame.id}/is-favorited`);
+          this.isFavorited = res.data.favorited;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    async toggleFavorite() {
+        try {
+            const res = await api.post(`/favoriteGame/${this.selectedGame.id}`);
+            this.isFavorited = res.data.favorited;
+        } catch (e) {
+            console.error(e);
+        }
     }
   },
 

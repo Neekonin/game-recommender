@@ -57,4 +57,10 @@ class Game extends Model
     {
         return $this->hasOne(Trailer::class, 'game_id');
     }
+
+    public function favorite()
+    {
+        return $this->belongsToMany(User::class, 'favorite_games');
+    }
+
 }

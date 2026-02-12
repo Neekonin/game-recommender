@@ -3,21 +3,19 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 use App\Services\RawgService;
 use App\Models\{
     Game,
     Genre,
     Platform,
     Style,
-    Store,
-    Screenshot
+    Store
 };
 
 class ImportRawgGames extends Command
 {
     protected $signature = 'rawg:import-games {--pages=1}';
-    protected $description = 'Import games with genres, platforms, tags, stores and screenshots from RAWG';
+    protected $description = 'Importa jogos com gêneros, plataformas, estilos, lojas e screenshots da API RAWG';
 
     public function handle(RawgService $rawg)
     {
@@ -176,6 +174,8 @@ class ImportRawgGames extends Command
                         );
                     }
                 }
+
+                $this->line("Jogo -> {$game->name}. Importado com sucesso!");
             }
         }
 
