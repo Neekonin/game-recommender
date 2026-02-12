@@ -11,7 +11,7 @@ use App\Models\{
     Platform,
     Style,
     Store,
-    GameScreenshot
+    Screenshot
 };
 
 class ImportRawgGames extends Command
@@ -29,8 +29,7 @@ class ImportRawgGames extends Command
             $response = $rawg->games($page);
 
             foreach ($response['results'] as $item) {
-
-                /* 🎮 GAME */
+                /* JOGOS */
                 $game = Game::updateOrCreate(
                     ['rawg_id' => $item['id']],
                     [
@@ -43,7 +42,7 @@ class ImportRawgGames extends Command
                     ]
                 );
 
-                /* 🏷️ GENRES */
+                /* GÊNEROS */
                 if (!empty($item['genres'])) {
                     $genreIds = [];
 
@@ -61,7 +60,7 @@ class ImportRawgGames extends Command
                     $game->genres()->sync($genreIds);
                 }
 
-                /* 🕹️ PLATFORMS */
+                /* PLATAFORMAS */
                 if (!empty($item['platforms'])) {
                     $platformIds = [];
 
@@ -81,8 +80,9 @@ class ImportRawgGames extends Command
                     $game->platforms()->sync($platformIds);
                 }
 
-                /* 🧠 TAGS → GAME STYLES */
+                /* ESTILOS */
                 if (!empty($item['tags'])) {
+                    $stylesIds = [];
                     $genreSlugs = Genre::pluck('slug')->map(fn ($s) => strtolower($s));
 
                     foreach ($item['tags'] as $tag) {
@@ -90,43 +90,88 @@ class ImportRawgGames extends Command
                             continue;
                         }
 
-                        Style::firstOrCreate(
+                        $s = Style::firstOrCreate(
                             ['rawg_id' => $tag['id']],
                             [
                                 'name' => $tag['name'],
                                 'slug' => $tag['slug'],
                             ]
                         );
+                        $stylesIds[] = $s->id;
+                    }
+
+                    $game->styles()->sync($stylesIds);
+                }
+
+                /* IMAGENS */
+                if (!empty($item['short_screenshots'])) {
+                    foreach ($item['short_screenshots'] as $key => $screenshots) {
+                        if ($key == 0) {
+                            continue;
+                        }
+
+                        $game->screenshots()->updateOrCreate(
+                            [
+                                'image' => $screenshots['image']
+                            ],
+                            []
+                        );
                     }
                 }
 
-                /* 🏪 STORES */
-                if (!empty($item['stores'])) {
-                    $storeIds = [];
+                $rawGameInfo = $rawg->gameInfo($item['id']);
+
+                if (!empty($rawGameInfo['description_raw'])) {
+                    $game->update([
+                        'description' => $rawGameInfo['description_raw']
+                    ]);
+                }
+
+                /* LOJAS */
+                $rawGameStores = $rawg->gameStoresUrl($item['id']);
+
+                if (!empty($rawGameStores['results'])) {
+                    $syncData = [];
+
+                    $urlMap = [];
+                    foreach ($rawGameStores['results'] as $storeResult) {
+                        $urlMap[$storeResult['store_id']] = $storeResult['url'];
+                    }
 
                     foreach ($item['stores'] as $storeItem) {
-                        $store = $storeItem['store'];
+                        $storeData = $storeItem['store'];
 
-                        $s = Store::firstOrCreate(
-                            ['rawg_id' => $store['id']],
+                        $store = Store::firstOrCreate(
+                            ['rawg_id' => $storeData['id']],
                             [
-                                'name' => $store['name'],
-                                'slug' => $store['slug'],
+                                'name' => $storeData['name'],
+                                'slug' => $storeData['slug'],
                             ]
                         );
-                        $storeIds[] = $s->id;
+
+                        $storeUrl = $urlMap[$storeData['id']] ?? null;
+
+                        $syncData[$store->id] = [
+                            'url_store' => $storeUrl
+                        ];
                     }
 
-                    $game->stores()->sync($storeIds);
+                    $game->stores()->sync($syncData);
                 }
 
-                /* 🖼️ SCREENSHOTS */
-                if (!empty($item['results']['screenshots'])) {
-                    foreach ($item['results'] as $screenshots) {
-                        GameScreenshot::firstOrCreate(
+                /* TRAILERS */
+                $rawGameTrailer = $rawg->gameTrailer($item['id']);
+
+                if (!empty($rawGameTrailer['results'])) {
+                    foreach ($rawGameTrailer['results'] as $trailer) {
+
+                        $game->trailers()->updateOrCreate(
                             [
-                                'game_id' => $game->id,
-                                'image'   => $screenshots['image'],
+                                'game_id' => $game->id
+                            ],
+                            [
+                                'name' => $trailer['name'],
+                                'url'  => $trailer['data']['max'] ?? null,
                             ]
                         );
                     }

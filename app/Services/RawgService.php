@@ -24,9 +24,23 @@ class RawgService
         ])->json();
     }
 
-    public function game(int $id)
+    public function gameInfo(int $id)
     {
         return Http::get("{$this->baseUrl}/games/{$id}", [
+            'key' => $this->apiKey,
+        ])->json();
+    }
+
+    public function gameStoresUrl(int $id)
+    {
+        return Http::get("{$this->baseUrl}/games/{$id}/stores", [
+            'key' => $this->apiKey,
+        ])->json();
+    }
+
+    public function gameTrailer(int $id)
+    {
+        return Http::get("{$this->baseUrl}/games/{$id}/movies", [
             'key' => $this->apiKey,
         ])->json();
     }
@@ -46,5 +60,4 @@ class RawgService
             'page_size' => 40,
         ])->json();
     }
-
 }

@@ -6,24 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('game_store', function (Blueprint $table) {
+        Schema::create('game_stores', function (Blueprint $table) {
             $table->id();
             $table->foreignId('game_id')->constrained()->cascadeOnDelete();
             $table->foreignId('store_id')->constrained()->cascadeOnDelete();
+            $table->string('url_store');
             $table->unique(['game_id', 'store_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('game_store');
+        Schema::dropIfExists('game_stores');
     }
 };

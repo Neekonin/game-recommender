@@ -1,5 +1,5 @@
-/* FUNDO */
-.login-page {
+/* Fundo idêntico ao login para manter padrão */
+.register-page {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7,42 +7,42 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* CARD */
-.login-card {
-  width: 420px;
+/* Card */
+.register-card {
+  width: 440px;
   padding: 40px;
   border-radius: 16px;
   background: rgba(25, 25, 35, 0.85);
   backdrop-filter: blur(10px);
   box-shadow: 
-    0 0 40px rgba(138, 43, 226, 0.25),
+    0 0 40px rgba(0, 191, 255, 0.2),
     0 10px 40px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(138, 43, 226, 0.2);
+  border: 1px solid rgba(0, 191, 255, 0.2);
   color: white;
   text-align: center;
 }
 
-/* TÍTULO */
+/* Título */
 .title {
   margin-bottom: 10px;
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
-  background: linear-gradient(90deg, #8a2be2, #00bfff);
+  background: linear-gradient(90deg, #00bfff, #8a2be2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* SUBTÍTULO */
+/* Subtítulo */
 .subtitle {
   font-size: 14px;
   color: #bbb;
   margin-bottom: 30px;
 }
 
-/* CAMPO */
+/* Campos */
 .field {
   text-align: left;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .field label {
@@ -52,7 +52,7 @@
   color: #aaa;
 }
 
-/* INPUTS */
+/* Inputs */
 .field input {
   width: 100%;
   padding: 12px;
@@ -65,35 +65,30 @@
 
 .field input:focus {
   outline: none;
-  border-color: #8a2be2;
-  box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+  border-color: #00bfff;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.6);
 }
 
-/* BOTÃO */
-.login-btn {
+/* Botão */
+.register-btn {
   width: 100%;
   padding: 14px;
   margin-top: 10px;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(90deg, #8a2be2, #00bfff);
+  background: linear-gradient(90deg, #00bfff, #8a2be2);
   color: white;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.login-btn:hover {
+.register-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 15px rgba(138, 43, 226, 0.6);
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
 }
 
-.login-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Switch cadastro */
+/* Switch */
 .switch {
   margin-top: 20px;
   font-size: 13px;
@@ -101,7 +96,7 @@
 }
 
 .switch span {
-  color: #00bfff;
+  color: #8a2be2;
   cursor: pointer;
   font-weight: 600;
 }

@@ -1,8 +1,10 @@
 <template>
   <div class="login-page">
     <div class="login-card">
-      <h1>Game Recommender</h1>
-      <p>Entre para descobrir jogos incríveis 🎮</p>
+      <h1 class="title">Game Recommender</h1>
+      <p class="subtitle">
+        Descubra jogos incríveis feitos para você
+      </p>
 
       <form @submit.prevent="login">
         <div class="field">
@@ -25,14 +27,15 @@
           />
         </div>
 
-        <button :disabled="loading">
+        <button class="login-btn" :disabled="loading">
           {{ loading ? 'Entrando...' : 'Entrar' }}
         </button>
+
         <p class="switch">
-            Não tem conta?
-        <span @click="$emit('goRegister')">
+          Não tem conta?
+          <span @click="$emit('goRegister')">
             Criar conta
-        </span>
+          </span>
         </p>
 
         <p v-if="error" class="error">{{ error }}</p>
@@ -45,6 +48,10 @@
 import api from '../services/api';
 
 export default {
+  emits: [
+    'logged',
+    'goRegister'
+  ],
   data() {
     return {
       email: '',

@@ -28,9 +28,10 @@ class Store extends Model
     {
         return $this->belongsToMany(
             Game::class,
-            'game_genre',
-            'genre_id',
-            'game_id'
+            'game_stores',
+            'store_id',
+            'game_id',
+            'url_store'
         );
     }
 }

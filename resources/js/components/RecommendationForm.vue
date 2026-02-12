@@ -1,4 +1,14 @@
 <template>
+  <header class="app-header">
+      <button class="logout-btn" @click="logout">
+        ⬅ Sair
+      </button>
+
+      <h1 class="app-title">
+        🎮 Recomendação de Jogos
+      </h1>
+  </header>
+
   <div class="filter-card">
     <header>
       <h2>Descubra jogos para você</h2>
@@ -70,25 +80,17 @@
       🔍 Buscar recomendações
     </button>
   </div>
-
-  <div>
-    <RecommendationsModal
-      v-if="showModal"
-      :games="games"
-      @close="showModal = false"
-    />
-  </div>
 </template>
 
 
 <script>
 import api from '../services/api';
-import RecommendationsModal from './RecommendationsModal.vue';
 
 export default {
-  components: { 
-    RecommendationsModal
-  },
+  emits: [
+    'recommendationsShowed', 
+    'logout'
+  ],
   data() {
     return {
       genres: [],
@@ -127,16 +129,29 @@ export default {
 
     async fetchRecommendations() {
       try {
-        const res = await api.get('/recommendations');
-        this.games = res.data;
-        this.showModal = true;
+        const res = await api.get('/recommendations', {
+          params: this.filters
+        });
 
-        this.$emit('recommendationsShowed');
+        this.$emit('recommendationsShowed', res.data);
       } catch (e) {
         console.error(e);
         alert('Erro ao buscar recomendações');
       }
-    }
+    },
+
+    async logout() {
+      try {
+        await api.post('/logout');
+      } catch (e) {
+        console.error(e);
+      }
+
+      localStorage.removeItem('token');
+      delete api.defaults.headers.common['Authorization'];
+
+      this.$emit('logout');
+    },
   }
 };
 </script>

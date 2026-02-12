@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Game extends Model
 {
@@ -18,6 +17,12 @@ class Game extends Model
         'description',
     ];
 
+    protected $casts = [
+        'released_at' => 'date',
+        'rating'      => 'float',
+        'metacritic'  => 'integer',
+    ];
+
     protected static function booted()
     {
         static::creating(function ($game) {
@@ -28,18 +33,28 @@ class Game extends Model
     }
 
     public function genres() {
-        return $this->belongsToMany(Genre::class);
+        return $this->belongsToMany(Genre::class, 'game_genres');
     }
 
     public function platforms() {
-        return $this->belongsToMany(Platform::class);
+        return $this->belongsToMany(Platform::class, 'game_platforms');
+    }
+
+    public function styles() {
+        return $this->belongsToMany(Style::class, 'game_styles');
     }
 
     public function stores() {
-        return $this->belongsToMany(Store::class);
+        return $this->belongsToMany(Store::class, 'game_stores')
+        ->withPivot('url_store');
     }
 
     public function screenshots() {
-        return $this->hasMany(GameScreenshot::class);
+        return $this->hasMany(Screenshot::class, 'game_id');
+    }
+
+    public function trailers()
+    {
+        return $this->hasOne(Trailer::class, 'game_id');
     }
 }

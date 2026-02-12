@@ -27,8 +27,8 @@ class Style extends Model
     {
         return $this->belongsToMany(
             Game::class,
-            'game_genre',
-            'genre_id',
+            'game_styles',
+            'style_id',
             'game_id'
         );
     }

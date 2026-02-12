@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -15,15 +17,14 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (!Auth::attempt($credentials)) {
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
             return response()->json([
                 'message' => 'Credenciais inválidas'
             ], 401);
         }
 
-        $user = $request->user();
-
-        // apaga tokens antigos (opcional)
         $user->tokens()->delete();
 
         $token = $user->createToken('spa-token')->plainTextToken;
@@ -36,10 +37,10 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $request->user()->tokens()->delete();
 
-        return response()->json(['message' => 'Logout efetuado']);
+        return response()->json([
+            'message' => 'Logout efetuado'
+        ]);
     }
 }

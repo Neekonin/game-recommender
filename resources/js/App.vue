@@ -1,42 +1,61 @@
 <template>
-  <div class="container">
-    <h1>Recomendação de Jogos</h1>
+<div class="app-bg">
+  <div
+      :class="[
+        'app-wrapper',
+        screen === 'app' ? 'app-layout' : 'auth-layout'
+      ]"
+    >
+      <!-- LOGIN -->
+      <Login
+        v-if="screen === 'login'"
+        @goRegister="screen = 'register'"
+        @logged="onLogged"
+      />
 
-    <!-- LOGIN -->
-    <Login
-      v-if="screen === 'login'"
-      @goRegister="screen = 'register'"
-      @logged="onLogged"
-    />
+      <!-- CADASTRO -->
+      <RegisterForm
+        v-else-if="screen === 'register'"
+        @goLogin="screen = 'login'"
+        @registered="onRegistered"
+      />
 
-    <!-- CADASTRO -->
-    <RegisterForm
-      v-else-if="screen === 'register'"
-      @goLogin="screen = 'login'"
-      @registered="onRegistered"
-    />
+      <!-- APLICAÇÃO -->
+      <RecommendationForm 
+        v-else-if="screen === 'app'"
+        @recommendationsShowed="onRecommendationsShowed"
+        @logout="onLogout"
+      />
 
-    <!-- APLICAÇÃO -->
-    <RecommendationForm v-else />
+      <RecommendationsModal
+        v-if="showModal"
+        :games="games"
+        @close="showModal = false"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import RecommendationForm from './components/RecommendationForm.vue';
-import RegisterForm from './components/RegisterForm.vue';
 import Login from './components/Login.vue';
-import Api from './services/api';
+import RegisterForm from './components/RegisterForm.vue';
+import RecommendationForm from './components/RecommendationForm.vue';
+import RecommendationsModal from './components/RecommendationsModal.vue';
+import api from './services/api';
 
 export default {
   components: {
-    RecommendationForm,
-    RegisterForm,
     Login,
+    RegisterForm,
+    RecommendationForm,
+    RecommendationsModal,
   },
 
   data() {
     return {
       screen: 'login',
+      showModal: false,
+      games: [],
     };
   },
 
@@ -45,8 +64,17 @@ export default {
       this.screen = 'app';
     },
 
+    onLogout() {
+      this.screen = 'login';
+    },
+
     onRegistered() {
       this.screen = 'login';
+    },
+
+    onRecommendationsShowed(games) {
+      this.games = games;
+      this.showModal = true;
     },
   },
 
@@ -58,7 +86,7 @@ export default {
       return;
     }
 
-    Api.get('/user')
+    api.get('/user')
       .then(() => {
         this.screen = 'app';
       })

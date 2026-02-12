@@ -7,7 +7,6 @@ use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\AuthController;
-use Illuminate\Http\Request;
 
 Route::post('/register', [
     RegisterController::class,
@@ -34,6 +33,14 @@ Route::get('/platforms', [
     'index'
 ]);
 
+Route::middleware('auth:sanctum')->post(
+    '/logout',
+    [
+        AuthController::class,
+        'logout'
+    ]
+);
+
 Route::middleware('auth:sanctum')->get(
     '/user',
     fn ($r) => $r->user()
@@ -41,5 +48,16 @@ Route::middleware('auth:sanctum')->get(
 
 Route::middleware('auth:sanctum')->get(
     '/recommendations',
-    [RecommendationController::class, 'index']
+    [
+        RecommendationController::class,
+        'index'
+    ]
+);
+
+Route::middleware('auth:sanctum')->get(
+    '/game/{id}',
+    [
+        RecommendationController::class,
+        'showGame'
+    ]
 );

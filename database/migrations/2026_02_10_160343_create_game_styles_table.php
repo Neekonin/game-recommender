@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('game_styles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('game_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('game_style_id')->constrained()->cascadeOnDelete();
-            $table->unique(['game_id', 'game_style_id']);
+            $table->foreignId('style_id')->constrained()->cascadeOnDelete();
+            $table->unique(['game_id', 'style_id']);
         });
     }
 

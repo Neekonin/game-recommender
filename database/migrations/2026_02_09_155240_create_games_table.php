@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('rawg_id')->unique();
             $table->string('name');
+            $table->text('description')->nullable();
             $table->string('slug')->unique();
             $table->date('released_at')->nullable();
             $table->float('rating')->nullable();
