@@ -93,7 +93,7 @@
   cursor: not-allowed;
 }
 
-/* Switch cadastro */
+/* SWITCH CADASTRO */
 .switch {
   margin-top: 20px;
   font-size: 13px;
@@ -110,7 +110,7 @@
   text-decoration: underline;
 }
 
-/* Erro */
+/* ERROR */
 .error {
   margin-top: 15px;
   color: #ff4d6d;

@@ -10,10 +10,8 @@
         <button class="close-btn" @click="handleClose">✕</button>
       </header>
 
-      <!-- ===================== -->
       <!-- GRID -->
-      <!-- ===================== -->
-      <div v-if="!selectedGame">
+      <div v-if="!selectedGame && !loading">
         <div class="games-grid">
           <div
             v-for="game in paginatedGames"
@@ -46,9 +44,12 @@
         </div>
       </div>
 
-      <!-- ===================== -->
+      <!-- LOADING -->
+      <div v-else-if="loading" class="details-loading">
+        <div class="spinner"></div>
+      </div>
+
       <!-- DETALHES -->
-      <!-- ===================== -->
       <div v-else class="game-details">
         <!-- HERO -->
         <div class="details-hero">
@@ -64,10 +65,9 @@
           </button>
           <button 
               class="favorite-btn"
-              :class="{ active: isFavorited }"
               @click="toggleFavorite"
           >
-              ♥
+              {{ isFavorited ? '❤️' : '🤍' }}
           </button>
 
           <!-- Conteúdo central -->
@@ -114,11 +114,11 @@
             </div>
 
             <!-- Lightbox -->
-            <div v-if="lightboxOpen" class="lightbox">
-
-              <button class="lightbox-close" @click="closeLightbox">
-                ✕
-              </button>
+            <div
+              v-if="lightboxOpen"
+              class="lightbox"
+              @click.self="closeLightbox"
+            >
 
               <button class="lightbox-btn left" @click="prevImage">
                 ‹
@@ -188,6 +188,7 @@ export default {
       currentImageIndex: 0,
       isFavorited: false,
       showbackBtn: true,
+      loading: false,
     };
   },
 
@@ -196,6 +197,12 @@ export default {
       this.showbackBtn = false;
       this.openGame(this.openGameId);
     }
+
+    window.addEventListener('keydown', this.handleKeydown);
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('keydown', this.handleKeydown);
   },
 
   computed: {
@@ -218,6 +225,12 @@ export default {
       this.isFavorited = false;
       this.showbackBtn = true;
       this.$emit('close');
+    },
+
+    handleKeydown(event) {
+      if (event.key === 'Escape' && this.lightboxOpen) {
+        this.closeLightbox();
+      }
     },
 
     openLightbox(index) {
@@ -243,6 +256,8 @@ export default {
     },
 
     async openGame(id) {
+      this.loading = true;
+      this.selectedGame = null;
       this.lightboxOpen = false;
       this.currentImageIndex = 0;
       this.isFavorited = false;
@@ -254,6 +269,8 @@ export default {
         this.checkIfFavorited();
       } catch (e) {
         console.error(e);
+      } finally {
+        this.loading = false
       }
     },
 
@@ -272,8 +289,16 @@ export default {
         try {
             const res = await api.post(`/favoriteGame/${this.selectedGame.id}`);
             this.isFavorited = res.data.favorited;
+
+            this.$emit(
+              'favoriteChanged',
+              this.isFavorited
+                ? 'Jogo adicionado aos favoritos'
+                : 'Jogo removido dos favoritos'
+            );
         } catch (e) {
             console.error(e);
+            this.$emit('favoriteChanged', 'Erro ao atualizar favorito', 'error');
         }
     }
   },

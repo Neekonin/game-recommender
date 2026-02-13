@@ -8,12 +8,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Style extends Model
 {
+    /**
+     * Atributos que podem ser preenchidos em massa.
+     * @var array<int, string>
+    */
     protected $fillable = [
         'rawg_id',
         'name',
         'slug',
     ];
 
+     /**
+     * O "booted" method do modelo.
+     * Gera o slug automaticamente a partir do nome se estiver vazio.
+    */
     protected static function booted()
     {
         static::creating(function ($style) {
@@ -23,6 +31,10 @@ class Style extends Model
         });
     }
 
+    /**
+     * Obtém os jogos associados a este estilo.
+     * * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    */
     public function games(): BelongsToMany
     {
         return $this->belongsToMany(

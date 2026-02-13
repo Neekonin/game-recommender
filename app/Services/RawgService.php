@@ -20,7 +20,7 @@ class RawgService
         return Http::get("{$this->baseUrl}/games", [
             'key' => $this->apiKey,
             'page' => $page,
-            'page_size' => 40,
+            'page_size' => 100,
         ])->json();
     }
 

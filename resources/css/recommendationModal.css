@@ -342,17 +342,6 @@
   border-radius: 10px;
 }
 
-.lightbox-close {
-  position: absolute;
-  top: 30px;
-  right: 40px;
-  font-size: 28px;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-}
-
 .lightbox-btn {
   position: absolute;
   top: 50%;
@@ -427,6 +416,30 @@
   transform: scale(1.15);
 }
 
-.favorite-btn.active {
-  color: #e63946;
+/* LOADING */
+.details-loading {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0,0,0,0.6);
+}
+
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.2);
+  border-top: 5px solid #42b883;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

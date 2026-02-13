@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use App\Models\Genre;
 use App\Models\Style;
 use App\Services\TranslationService;
-use Illuminate\Support\Str;
 
 class TranslateGenreStyle extends Command
 {

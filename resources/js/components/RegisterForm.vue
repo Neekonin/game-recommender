@@ -70,6 +70,13 @@ export default {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('user', JSON.stringify(res.data.user));
 
+        this.$emit(
+          'userRegistered',
+          res.data.token
+            ? 'Cadastro realizado com sucesso!'
+            : 'Houve um problema com o cadastro. Tente novamente.'
+        );
+
         this.$emit('registered');
       } catch (e) {
         this.error = e.response?.data?.message || 'Erro ao cadastrar';

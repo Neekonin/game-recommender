@@ -8,11 +8,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Platform extends Model
 {
+    /**
+     * Atributos que podem ser preenchidos em massa.
+     * @var array
+    */
     protected $fillable = [
         'rawg_id', 
         'name'
     ];
 
+    /**
+     * O "booted" method do modelo.
+     * Gera o slug automaticamente a partir do nome se estiver vazio.
+    */
     protected static function booted()
     {
         static::creating(function ($platform) {
@@ -22,11 +30,15 @@ class Platform extends Model
         });
     }
 
+    /**
+     * Obtém os jogos disponíveis nesta plataforma.
+     * * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    */
     public function games(): BelongsToMany
     {
         return $this->belongsToMany(
             Game::class,
-            'game_platform',
+            'game_platforms',
             'platform_id',
             'game_id'
         );

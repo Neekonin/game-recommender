@@ -4,10 +4,11 @@
 
 body {
   margin: 0;
+  padding: 0;
   min-height: 100vh;
 
   background: 
-    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    linear-gradient(rgba(0, 0, 0, 0.212), rgba(0, 0, 0, 0.205)),
     url('/images/games_background.jpg');
 
   background-size: cover;
@@ -34,6 +35,49 @@ body {
   width: 100%;
   max-width: 1100px;
   padding: 40px 20px;
+}
+
+.main-content {
+  padding-top: 100px;
+}
+
+/* NOTIFICAÇÃO */
+.toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  padding: 18px 28px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+
+  z-index: 3000;
+
+  animation: fadeScaleIn 0.3s ease;
+}
+
+/* CORES */
+.toast.success {
+  background: linear-gradient(135deg, #1c35a5, #240cf8);
+}
+
+.toast.error {
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+}
+
+/* ANIMAÇÃO */
+@keyframes fadeScaleIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 

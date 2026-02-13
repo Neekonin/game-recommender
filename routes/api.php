@@ -8,6 +8,7 @@ use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\FavoriteGamesController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\AuthController;
+use Illuminate\Http\Request;
 
 Route::post('/register', 
     [
@@ -44,17 +45,19 @@ Route::get('/platforms',
     ]
 );
 
+Route::middleware('auth:sanctum')->get(
+    '/user',
+    function (Request $request) {
+        return response()->json($request->user());
+    }
+);
+
 Route::middleware('auth:sanctum')->post(
     '/logout',
     [
         AuthController::class,
         'logout'
     ]
-);
-
-Route::middleware('auth:sanctum')->get(
-    '/user',
-    fn ($r) => $r->user()
 );
 
 Route::middleware('auth:sanctum')->get(

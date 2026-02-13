@@ -8,12 +8,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Store extends Model
 {
+    /**
+     * Atributos que podem ser preenchidos em massa.
+     * @var array
+    */
     protected $fillable = [
         'rawg_id',
         'name',
         'slug',
     ];
 
+     /**
+     * O "booted" method do modelo.
+     * Gera o slug automaticamente a partir do nome se estiver vazio.
+    */
     protected static function booted()
     {
         static::creating(function ($store) {
@@ -24,6 +32,10 @@ class Store extends Model
         });
     }
 
+    /**
+     * Obtém os jogos disponíveis nesta loja.
+     * * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    */
     public function games(): BelongsToMany
     {
         return $this->belongsToMany(
