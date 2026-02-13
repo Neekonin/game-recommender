@@ -1,66 +1,120 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎮 Game Recommender
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicação web para descoberta e gerenciamento de jogos utilizando a API da RAWG.
 
-## About Laravel
+O projeto permite importar jogos diretamente da API, armazenar no banco de dados e traduzir automaticamente gêneros e estilos utilizando a API do DeepL.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📌 Sobre o Projeto
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+O **Game Recommender** é uma aplicação desenvolvida com:
 
-## Learning Laravel
+- PHP 8.4
+- Laravel 11
+- Vue.js
+- Docker
+- MySQL
+- Redis
+- Integração com API RAWG
+- Integração com API DeepL
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 🚀 O que ele faz?
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- Importa jogos da API RAWG
+- Armazena dados no banco
+- Traduz gêneros e estilos automaticamente
+- Interface frontend para navegação dos jogos
+- Gerenciamento simplificado via script `manager.sh`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+## 🖼️ Preview do Projeto
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+![Preview do Projeto](./docs/preview.jpg)
 
-### Premium Partners
+# 🧰 Pré-requisitos
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Antes de iniciar, é necessário ter instalado:
 
-## Contributing
+- 🐳 Docker  
+- 🐳 Docker Compose  
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Verifique se estão instalados:
 
-## Code of Conduct
+```
+docker -v
+docker compose version
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Se não estiverem instalados:
 
-## Security Vulnerabilities
+Docker:
+https://www.docker.com/products/docker-desktop/
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 🔑 Configuração das APIs
 
-## License
+O próprio `manager.sh` possui uma opção para configurar as chaves automaticamente.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Ele:
+
+- Cria o `.env` se não existir
+- Remove chaves antigas
+- Solicita as novas chaves
+- Atualiza o .env com elas
+
+
+## Onde obter as chaves?
+
+RAWG API  
+https://rawg.io/apidocs  
+
+DeepL API  
+https://www.deepl.com/pro-api  
+
+
+# ⚙️ Como Rodar o Projeto
+
+O projeto possui um script inteligente chamado:
+
+```
+manager.sh
+```
+
+Ele automatiza todo o processo de setup e execução.
+
+
+## 🔹 1️⃣ Clone o repositório
+
+```
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
+```
+
+## 🔹 2️⃣ Dê permissão ao manager
+
+```
+chmod +x manager.sh
+```
+
+## 🔹 3️⃣ Execute o Manager
+
+```
+./manager.sh
+```
+
+## 🔹 4️⃣ Execute as opções na seguinte ordem:
+
+```
+1 → Subir Containers
+4 → Configurar API Keys
+5 → Instalar Dependências
+6 → Rodar Migrations
+7 → Importar Jogos
+8 → Traduzir Gêneros e Estilos
+9 → Rodar Frontend
+```
+
+Após isso, a aplicação estará disponível em:
+
+```
+http://localhost:8000
+```
