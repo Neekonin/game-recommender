@@ -9,13 +9,25 @@ use Illuminate\Support\Facades\Cache;
 
 class RecommendationService
 {
+    /**
+     * @var TranslationService
+    */
     protected $translationService;
 
+    /**
+     * Instância o serviço de tradução.
+     * @param TranslationService $translationService
+    */
     public function __construct(TranslationService $translationService)
     {
         $this->translationService = $translationService;
     }
 
+    /**
+     * Filtra jogos com base em critérios de gêneros, plataformas, estilos e avaliação.
+     * @param array $filters Associativo contendo 'genres', 'platforms', 'styles' e 'min_rating'.
+     * @return Collection<\App\Models\Game>
+    */
     public function getRecommendation(array $filters): Collection
     {
         return Game::query()            
@@ -41,6 +53,11 @@ class RecommendationService
         ->get();
     }
 
+    /**
+     * Retorna os detalhes completos de um jogo, com descrição traduzida e cacheada.
+     * @param int $id ID primário do jogo
+     * @return JsonResponse
+    */
     public function getGame(int $id): JsonResponse
     {
         $game = Game::with(['screenshots', 'stores', 'trailers'])->findOrFail($id);

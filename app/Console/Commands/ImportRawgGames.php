@@ -14,9 +14,23 @@ use App\Models\{
 
 class ImportRawgGames extends Command
 {
+    /**
+     * A assinatura do comando.
+     * @var string
+    */
     protected $signature = 'rawg:import-games {--pages=1}';
+
+    /**
+     * A descrição do comando exibida na listagem do artisan.
+     * @var string
+    */
     protected $description = 'Importa jogos com gêneros, plataformas, estilos, lojas e screenshots da API RAWG';
 
+    /**
+     * Executa a lógica do comando.
+     * @param RawgService $rawg Instância do serviço de comunicação com a API
+     * @return int Status de saída
+    */
     public function handle(RawgService $rawg)
     {
         $pages = (int) $this->option('pages');

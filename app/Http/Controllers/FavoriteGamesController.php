@@ -7,6 +7,12 @@ use Illuminate\Http\JsonResponse;
 
 class FavoriteGamesController extends Controller
 {
+    /**
+     * Alterna o estado de favorito de um jogo para o usuário autenticado.
+     * @param Request $request
+     * @param int|string $id ID do jogo
+     * @return JsonResponse Retorna o novo estado de favorito
+    */
     public function saveFavoriteGame(Request $request, $id): JsonResponse
     {
         $user = $request->user();
@@ -22,6 +28,12 @@ class FavoriteGamesController extends Controller
         return response()->json(['favorited' => true]);
     }
 
+    /**
+     * Verifica se um jogo específico está favoritado pelo usuário.
+     * @param Request $request
+     * @param int|string $id  ID do jogo
+     * @return JsonResponse Retorna se o jogo está favoritado ou não
+    */
     public function isFavorited(Request $request, $id): JsonResponse
     {
         $user = $request->user();
@@ -35,6 +47,11 @@ class FavoriteGamesController extends Controller
         ]);
     }
 
+    /**
+     * Lista todos os jogos favoritados pelo usuário autenticado.
+     * @param Request $request
+     * @return JsonResponse retorna uma coleção de jogos favoritados
+    */
     public function showUserFavoriteGames(Request $request): JsonResponse
     {
         $user = $request->user();

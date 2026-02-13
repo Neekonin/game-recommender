@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class AuthController extends Controller
 {
+    /**
+     * Autentica o usuário e gera um novo token de acesso.
+     * @param Request $request Contém 'email' e 'password'
+     * @return JsonResponse Retorna o objeto do usuário e o token plainText
+    */
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -34,6 +38,11 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Revoga todos os tokens do usuário autenticado, encerrando a sessão.
+     * @param Request $request
+     * @return JsonResponse
+    */
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();

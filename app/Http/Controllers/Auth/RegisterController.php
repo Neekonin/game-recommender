@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
+    /**
+     * Registra um novo usuário e retorna o token de acesso.
+     * @param Request $request Contém name, email, password e password_confirmation
+     * @return JsonResponse Retorna os dados do usuário e o token de autenticação
+    */
     public function register(Request $request)
     {
         $data = $request->validate([
